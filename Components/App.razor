@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <ResourcePreloader />
+    <!-- PICO -->
+    <link rel="stylesheet" href="@Assets["pico/pico.min.css"]" />
+    <link rel="stylesheet" href="@Assets["pico/pico.colors.min.css"]" />
+    <!-- Fontawesome Icons-->
+    <link rel="stylesheet" href="@Assets["fontawesome/all.min.css"]"/>
+@*     <link rel="stylesheet" href="@Assets["fontawesome/fontawesome.min.css"]" />
+    <link rel="stylesheet" href="@Assets["fontawesome/solid.min.css"]" /> *@
+    <!-- App Stylesheets -->
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <link rel="stylesheet" href="@Assets["HAK_BlazorPicoTemplate.styles.css"]" />
+    <meta name="color-scheme" content="light dark">
+    <ImportMap />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <ReconnectModal />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <!-- Eigene JS Functions -->
+    <script src="javascript/modal.js"></script>
+</body>
+
+</html>

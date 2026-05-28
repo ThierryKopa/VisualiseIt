@@ -1,0 +1,351 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<style>
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    
+    header {
+        border-bottom: 3px solid var(--pico-muted-border-color);
+        padding: 10px;
+        padding-top: 0px;
+    }
+
+    
+    .wrapper {
+        display: flex;
+        flex: 1; /* Занимает всё оставшееся вертикальное пространство */
+    }
+
+    /* Левая боковая панель */
+    aside {
+        width: 26%;
+        border-right: 3px solid var(--pico-muted-border-color);
+        padding: 0px;
+        padding-top: 10px;
+        height: 90%;
+    }
+
+    /* Правая основная область */
+    main {
+        flex: 1; /* Занимает всё оставшееся место справа */
+        padding: 15px;
+        height: 90%;
+    }
+
+    strong{
+        font-size: 30px;
+    }
+
+    
+
+    .scroll-enable{
+        height: 90%;
+        overflow-y: auto;
+        padding: 5px;
+        padding-right: 10px;
+    }
+    .fall{
+        box-shadow: 0px 0px 15px -1px #000000;
+         
+         background-image: url(@pathToPic);
+         
+         background-repeat: no-repeat;
+          
+         background-position: center center;
+            
+         background-size: cover;
+
+         height: 650px;
+         width: 1150px;
+         
+    }
+
+    .input-small {
+        height: auto !important; /* Разрешаем инпуту сжаться */
+        padding: 7px 12px !important; /* Уменьшаем отступы */
+        font-size: 20px !important; /* Можно немного уменьшить шрифт */
+        font-weight: 300 !important;
+    }
+
+    .thin-font{
+        font-weight:400 !important;
+    }
+
+    
+</style>
+
+
+<header>
+    <strong>Visualise IT!</strong>
+</header>
+
+<div class="wrapper">
+
+    <aside>
+        <div class="scroll-enable">
+            
+            <EditForm Model="@myBall" OnValidSubmit="StartSimulation">
+                <DataAnnotationsValidator />
+        
+
+            <label class="thin-font">Gewicht in kg</label>
+                    @*<input class="input-small" type="number" name="gewicht" placeholder="Gewicht" min="1" max="99">*@
+            <InputNumber @bind-Value="myBall.gewicht" class="input-small" type="number" name="gewicht" placeholder="Gewicht"/>
+
+            <label class="thin-font">Geschwindigkeit in m/s</label>
+                    @*<input class="input-small" type="number" name="gewicht" placeholder="Geschwindigkeit">*@
+            <InputNumber @bind-Value="myBall.geschwindigkeit" class="input-small" type="number" name="gewicht" placeholder="Geschwindigkeit"/>
+
+
+                <label class="thin-font">Wurfwinkel in °</label>
+            <InputNumber @bind-Value="myBall.winkel" class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel" />
+                    @*<input class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel">*@
+
+                    <label class="thin-font">Freifall Beschleunigung (g)</label>
+                    <select @bind="myBall.g" @bind:after="DefineTheG" class="input-small" name="favorite-cuisine" aria-label="Auwählen..." required>
+                        <option selected disabled value="">
+                            Freifall Beschleunigung
+                        </option>
+
+                        <option value="merkur">Merkur | 3.70 m/s²</option>
+                        <option value="venus">Venus | 8.88 m/s²</option>
+                        <option value="erde">Erde | 9.81 m/s²</option>
+                        <option value="mond">Mond | 1.62 m/s²</option>
+                        <option value="mars">Mars | 3.86 m/s²</option>
+                        <option value="jupiter">Jupiter | 24.79 m/s²</option>
+                        <option value="saturn">Saturn | 10.44 m/s²</option>
+
+                    </select>
+
+                <br />
+                <div style="display:flex; align-items:center; gap:1rem;">
+                <label class="thin-font">Luftwiderstand</label>
+                <input type="checkbox" checked />
+                </div>
+                
+                <div style="display:flex; align-items:center; gap:1rem;">
+                <label class="thin-font">Reibungskraft</label>
+                <input type="checkbox" @bind-value="reibung" checked/>
+                </div>
+                <br />
+                
+           
+            <ValidationSummary />
+
+            <button type="submit" class="contrast" style="width: 100%">Start</button>
+            
+            </EditForm>
+        </div>
+    </aside>
+
+    <main>
+       
+        
+        <div class="fall">
+        
+            
+
+            <svg height="650px" width="1150px"
+                 @onmousemove="OnMouseMove"
+                 @onmouseup="StopDrag"
+                 @onmouseleave="StopDrag">
+                >
+                <circle r="@radius" 
+                    cx="@x.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                    cy="@y.ToString(System.Globalization.CultureInfo.InvariantCulture)" fill="red" stroke="black" width="2" @onmousedown="StartDrag" />
+
+                <text x="1050" y="40"
+                      fill="black"
+                      font-size="20px"
+                      font-family="monospace"
+                      
+                      style="user-select: none; pointer-events: none;">
+                    @elapsedTime.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)
+                </text>
+
+                @*Y-Axis*@
+                <rect width="20" height="3" x="0" y="@y.ToString(System.Globalization.CultureInfo.InvariantCulture)" fill="red" />
+
+                @*X-Axis*@
+                <rect width="3" height="20" x="@x.ToString(System.Globalization.CultureInfo.InvariantCulture)" y="@Convert.ToString(650 - radius, System.Globalization.CultureInfo.InvariantCulture)" fill="red" />
+            </svg>
+
+        </div>
+    </main>
+
+</div>
+
+
+@code {
+
+    private bool reibung = true;
+
+    private double widthForRec = 650;
+
+    private double elapsedTime;
+    private double freiFallG;
+    private double radius = 17;
+    private double x = 100;
+    private double y = 100;
+    private double deltaTime = 1.0 / 60.0;
+    private double pixelsPerMeter = 25;
+
+    private CancellationTokenSource? _cts;
+
+    Ball myBall = new Ball();
+
+    private bool running = false;
+
+    private const double elasticity = 0.9;
+
+    private string pathToPic;
+
+    private async Task StartSimulation()
+    {
+        double winkelInRadians = myBall.winkel * Math.PI / 180.0;
+
+        myBall.tempoX = myBall.geschwindigkeit * Math.Cos(winkelInRadians);
+        myBall.tempoY = myBall.geschwindigkeit * Math.Sin(winkelInRadians);
+
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+
+        using var periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(1000 / 60));
+        //var timer = new Timer(DoSomethingFancy, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(1000/60));
+        try
+        {
+            // Цикл будет ждать строго 16 мс ПЕРЕД каждым следующим шагом.
+            // Никаких наложений потоков физически быть не может!
+            while (await periodicTimer.WaitForNextTickAsync(_cts.Token))
+            {
+                UpdatePhysics(); // Вынесли физику в отдельный чистый метод
+
+                await InvokeAsync(StateHasChanged); // Ждем, пока Blazor перерисует интерфейс
+            }
+        }
+        catch (OperationCanceledException)
+        {
+
+        }
+
+    }
+
+    private void UpdatePhysics()
+    {
+        elapsedTime += deltaTime;
+        // 25px = 1 meter
+        // Luftwiderstand
+        double k = 0.09;
+        double fx, fy, ax, ay;
+
+        // Kräfte
+        fx = -k * myBall.tempoX;
+        fy = -myBall.gewicht * freiFallG - (k * myBall.tempoY);
+        
+
+        // Beschleunigung
+        ax = fx / myBall.gewicht;
+        ay = fy / myBall.gewicht;
+
+        // Geschwindigkeit
+        myBall.tempoX += ax * deltaTime;
+        myBall.tempoY += ay * deltaTime;
+
+        // Position: 25px - 1m
+        x += myBall.tempoX * deltaTime * pixelsPerMeter;
+        y -= myBall.tempoY * deltaTime * pixelsPerMeter;
+
+        //  НИЗ
+        if (y >= 650 - radius)
+        {
+            y = 650 - radius; // Возвращаем мяч на границу поля
+            myBall.tempoY = Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость положительной (летит вверх)
+
+            if(reibung)
+            myBall.tempoX *= 0.55;
+
+            
+            if (Math.Abs(myBall.tempoY) < 0.5)
+            {
+                myBall.tempoY = 0;
+            }
+
+        }
+
+        // ВЕРХ
+        if (y <= 0 + radius)
+        {
+            y = 0 + radius; // Возвращаем мяч на границу поля
+            myBall.tempoY = -Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость отрицательной (падет вниз)
+        }
+
+        // ЛЕВАЯ СТЕНА
+        if (x <= 0 + radius)
+        {
+            x = 0 + radius;
+            myBall.tempoX = Math.Abs(myBall.tempoX) * elasticity; // Делаем скорость положительной (летит вправо)
+        }
+
+        // ПРАВАЯ СТЕНА
+        if (x >= 1150 - radius)
+        {
+            x = 1150 - radius;
+            myBall.tempoX = -Math.Abs(myBall.tempoX) * elasticity; // Делаем скорость отрицательной (летит влево)
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
+
+
+    bool dragging = false;
+
+    private void DefineTheG()
+    {
+        Dictionary<string, double> GValues = new Dictionary<string, double>();
+        GValues.Add("merkur", 3.70);
+        GValues.Add("venus", 8.88);
+        GValues.Add("erde", 9.81);
+        GValues.Add("mond", 1.62);
+        GValues.Add("mars", 3.86);
+        GValues.Add("jupiter", 24.79);
+        GValues.Add("saturn", 10.44);
+
+        freiFallG = GValues[myBall.g];
+        pathToPic = $"images/{myBall.g}.png";
+        InvokeAsync(StateHasChanged);
+    }
+
+    void StartDrag(MouseEventArgs e)
+    {
+        dragging = true;
+    }
+
+    void StopDrag(MouseEventArgs e)
+    {
+        dragging = false;
+    }
+
+    void OnMouseMove(MouseEventArgs e)
+    {
+        if (!dragging)
+            return;
+
+        x = e.OffsetX;
+        y = e.OffsetY;
+
+        
+        x = Math.Max(radius, Math.Min(1150 - radius, x));
+        y = Math.Max(radius, Math.Min(650 - radius, y));
+    }
+}

@@ -1,0 +1,16 @@
+﻿@page "/hone"
+
+<PageTitle>Home</PageTitle>
+
+
+
+@code{
+    private Modal myModal = default!; // Modal Komponente   
+
+    private void TuIrgendwas()
+    {
+        Console.WriteLine("Fertig.");
+        myModal.CloseModal(); // Schließe Modal nach der Aktion
+    }
+
+}
