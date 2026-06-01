@@ -1,0 +1,239 @@
+@page "/login"
+
+<PageTitle>Login – Visualise IT!</PageTitle>
+
+<div class="login-container">
+    <nav class="lang-switcher">
+        <a href="/en/login" class="@(CurrentLang == "EN" ? "active" : "")">EN</a>
+        <span>|</span>
+        <a href="/de/login" class="@(CurrentLang == "DE" ? "active" : "")">DE</a>
+    </nav>
+
+    <div class="login-grid">
+
+        <!-- Benutzer -->
+        <div class="field-col">
+            <label class="field-label" for="username">Benutzer</label>
+            <input id="username" type="text" class="field-input" @bind="Username" placeholder="" />
+            <div class="side-image left-image">
+                <img src="images/patrick-sad.png" alt="Trauriger Patrick" />
+            </div>
+        </div>
+
+        <!-- Mitte -->
+        <div class="center-col">
+            <div class="logo-circle">
+                <img src="images/logo.png" alt="Logo" />
+            </div>
+            <button class="btn-login" @onclick="HandleLogin">
+                Anmelden →
+            </button>
+            <a href="/register" class="register-link">Registrieren</a>
+        </div>
+
+        <!-- Passwort -->
+        <div class="field-col">
+            <label class="field-label" for="password">Passwort</label>
+            <input id="password" type="@(ShowPassword ? "text" : "password")"
+                   class="field-input" @bind="Password" placeholder="" />
+            <label class="show-password-label">
+                <input type="checkbox" @bind="ShowPassword" />
+                Passwort Anzeigen
+            </label>
+            <div class="side-image right-image">
+                <img src="images/sponge-surprised.png" alt="Überraschter SpongeBob" />
+            </div>
+        </div>
+
+    </div>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p class="error-msg">@ErrorMessage</p>
+    }
+</div>
+
+@code {
+    private string CurrentLang { get; set; } = "EN";
+    private string Username { get; set; } = string.Empty;
+    private string Password { get; set; } = string.Empty;
+    private bool ShowPassword { get; set; } = false;
+    private string ErrorMessage { get; set; } = string.Empty;
+
+    private void HandleLogin()
+    {
+        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        {
+            ErrorMessage = "Bitte Benutzername und Passwort eingeben.";
+            return;
+        }
+
+        // Hier eigene Authentifizierungslogik einbauen
+        ErrorMessage = string.Empty;
+        // z.B.: NavigationManager.NavigateTo("/dashboard");
+    }
+}
+
+<style>
+    .login-container {
+        min-height: 100vh;
+        background-color: #e0e0e0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .lang-switcher {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .lang-switcher a {
+        text-decoration: none;
+        color: #222;
+        font-weight: 400;
+    }
+
+    .lang-switcher a.active {
+        text-decoration: underline;
+        font-weight: 700;
+    }
+
+    .lang-switcher span {
+        color: #555;
+    }
+
+    .login-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: start;
+        gap: 2rem;
+        width: 100%;
+        max-width: 900px;
+        padding: 2rem;
+    }
+
+    /* --- Field columns --- */
+    .field-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .field-label {
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .field-input {
+        width: 200px;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        border: 1.5px solid #bbb;
+        background: #f5f5f0;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .field-input:focus {
+        border-color: #555;
+    }
+
+    .show-password-label {
+        font-size: 0.85rem;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+    }
+
+    .side-image img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: block;
+    }
+
+    /* --- Center column --- */
+    .center-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        padding-top: 0.5rem;
+    }
+
+    .logo-circle {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #111;
+        background: #fff;
+    }
+
+    .logo-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-login {
+        padding: 0.75rem 2rem;
+        border-radius: 999px;
+        border: 1.5px solid #333;
+        background: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .btn-login:hover {
+        background-color: #333;
+        color: #fff;
+    }
+
+    .register-link {
+        font-size: 0.95rem;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .register-link:hover {
+        text-decoration: underline;
+    }
+
+    /* --- Error --- */
+    .error-msg {
+        color: #c0392b;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    /* --- Responsive --- */
+    @@media (max-width: 700px) {
+        .login-grid {
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+
+        .center-col {
+            order: -1;
+        }
+    }
+</style>
