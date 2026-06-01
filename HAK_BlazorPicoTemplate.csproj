@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Folder Include="Components\Modules\" />
+    <Folder Include="Database\" />
   </ItemGroup>
 
 </Project>

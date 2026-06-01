@@ -1,4 +1,5 @@
 using HAK_BlazorPicoTemplate.Components;
+using Microsoft.AspNetCore.Localization;
 
 namespace HAK_BlazorPicoTemplate
 {
@@ -11,9 +12,25 @@ namespace HAK_BlazorPicoTemplate
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
-                
+
+            
+
+            // 1. Lokalisierungs-Dienst hinzufügen und Ordnername definieren
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             var app = builder.Build();
+
+            // 2. Unterstützte Sprachen definieren
+            var supportedCultures = new[] { "de", "en" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[0]) // Deutsch als Standard
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            // 3. Middleware aktivieren (Wichtig: Vor anderen Routing/Auth-Middlewares!)
+            app.UseRequestLocalization(localizationOptions);
+
+            
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -31,7 +48,20 @@ namespace HAK_BlazorPicoTemplate
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
-                
+
+            app.MapGet("/Culture/Set", (string culture, string redirectUri, HttpContext httpContext) =>
+            {
+                if (culture != null)
+                {
+                    httpContext.Response.Cookies.Append(
+                        CookieRequestCultureProvider.DefaultCookieName,
+                        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                        new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                    );
+                }
+
+                return Results.Redirect(redirectUri);
+            });
 
             app.Run();
         }
