@@ -124,7 +124,7 @@
     <value>Erde | 9.81 m/s²</value>
   </data>
   <data name="G" xml:space="preserve">
-    <value>Freifallbeschleunigung (g)</value>
+    <value>Freifallbeschleunigung</value>
   </data>
   <data name="Geschwindigkeit" xml:space="preserve">
     <value>Geschwindigkeit in m/s</value>

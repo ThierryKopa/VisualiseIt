@@ -1,5 +1,8 @@
 using HAK_BlazorPicoTemplate.Components;
+using HAK_BlazorPicoTemplate.Database;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace HAK_BlazorPicoTemplate
 {
@@ -13,7 +16,7 @@ namespace HAK_BlazorPicoTemplate
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            
+            builder.Services.AddDbContextFactory<UserDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // 1. Lokalisierungs-Dienst hinzufügen und Ordnername definieren
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");

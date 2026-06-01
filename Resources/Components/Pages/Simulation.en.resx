@@ -124,7 +124,7 @@
     <value>Earth | 9.81 m/s²</value>
   </data>
   <data name="G" xml:space="preserve">
-    <value>Freefall acceleration (g)</value>
+    <value>Freefall acceleration</value>
   </data>
   <data name="Geschwindigkeit" xml:space="preserve">
     <value>Speed in m/s</value>

@@ -96,7 +96,7 @@
             <strong>Visualise IT!</strong>
         </ul>
         <ul>
-            <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a>  | 
+            <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a> | 
             <a href="/Culture/Set?culture=en&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">EN</a>
         </ul>
     </nav>
@@ -114,17 +114,17 @@
         
 
             <label class="thin-font">@Loc["Gewicht"]</label>
-                    @*<input class="input-small" type="number" name="gewicht" placeholder="Gewicht" min="1" max="99">*@
+            
             <InputNumber @bind-Value="myBall.gewicht" class="input-small" type="number" name="gewicht" placeholder="Gewicht"/>
 
             <label class="thin-font">@Loc["Geschwindigkeit"]</label>
-                    @*<input class="input-small" type="number" name="gewicht" placeholder="Geschwindigkeit">*@
+            
             <InputNumber @bind-Value="myBall.geschwindigkeit" class="input-small" type="number" name="gewicht" placeholder="Geschwindigkeit"/>
 
 
                 <label class="thin-font">@Loc["Wurfwinkel"]</label>
             <InputNumber @bind-Value="myBall.winkel" class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel" />
-                    @*<input class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel">*@
+     
 
                     <label class="thin-font">@Loc["G"]</label>
                     <select @bind="myBall.g" @bind:after="DefineTheG" class="input-small" name="favorite-cuisine" aria-label="Auwählen..." required>
@@ -144,12 +144,12 @@
 
                 <br />
                 <div style="display:flex; align-items:center; gap:1rem;">
-                <label class="thin-font">Luftwiderstand</label>
-                <input type="checkbox" checked />
+                    <label class="thin-font">@Loc["Luftwideerstand"] </label>
+                            <input type="checkbox" @bind-value="luftwiderstand" checked />
                 </div>
                 
                 <div style="display:flex; align-items:center; gap:1rem;">
-                <label class="thin-font">Reibungskraft</label>
+                <label class="thin-font">@Loc["Reibung"]</label>
                 <input type="checkbox" @bind-value="reibung" checked/>
                 </div>
                 <br />
@@ -162,12 +162,9 @@
         </div>
     </aside>
 
-    <main>
-       
+    <main>       
         
-        <div class="fall">
-        
-            
+        <div class="fall">           
 
             <svg height="650px" width="1150px"
                  @onmousemove="OnMouseMove"
@@ -205,7 +202,7 @@
 @code {
 
     private bool reibung = true;
-
+    private bool luftwiderstand = true;
     private double widthForRec = 650;
 
     private double elapsedTime;
@@ -244,9 +241,9 @@
             // Никаких наложений потоков физически быть не может!
             while (await periodicTimer.WaitForNextTickAsync(_cts.Token))
             {
-                UpdatePhysics(); // Вынесли физику в отдельный чистый метод
+                UpdatePhysics(); 
 
-                await InvokeAsync(StateHasChanged); // Ждем, пока Blazor перерисует интерфейс
+                await InvokeAsync(StateHasChanged);
             }
         }
         catch (OperationCanceledException)
@@ -261,8 +258,17 @@
         elapsedTime += deltaTime;
         // 25px = 1 meter
         // Luftwiderstand
-        double k = 0.09;
-        double fx, fy, ax, ay;
+
+        double fx, fy, ax, ay, k;
+
+        if (luftwiderstand)
+        {
+            k = 0.03;
+        }
+        else
+        {
+            k = 0;
+        }
 
         // Kräfte
         fx = -k * myBall.tempoX;
@@ -288,7 +294,7 @@
             myBall.tempoY = Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость положительной (летит вверх)
 
             if(reibung)
-            myBall.tempoX *= 0.55;
+            myBall.tempoX *= 0.40;
 
             
             if (Math.Abs(myBall.tempoY) < 0.5)
