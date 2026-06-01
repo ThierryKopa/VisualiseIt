@@ -120,7 +120,31 @@
   <data name="DescriptionText" xml:space="preserve">
     <value>This Web-Site supports some languages</value>
   </data>
+  <data name="Erde" xml:space="preserve">
+    <value>Earth | 9.81 m/s²</value>
+  </data>
+  <data name="G" xml:space="preserve">
+    <value>Freefall acceleration (g)</value>
+  </data>
   <data name="Geschwindigkeit" xml:space="preserve">
-    <value>Speed</value>
+    <value>Speed in m/s</value>
+  </data>
+  <data name="Gewicht" xml:space="preserve">
+    <value>Weight in kg</value>
+  </data>
+  <data name="Luftwiderstand" xml:space="preserve">
+    <value>Air resistance</value>
+  </data>
+  <data name="Merkur" xml:space="preserve">
+    <value>Mercury | 3.70 m/s²</value>
+  </data>
+  <data name="Mond" xml:space="preserve">
+    <value>Moon | 1.62 m/s²</value>
+  </data>
+  <data name="Reibung" xml:space="preserve">
+    <value>Friction</value>
+  </data>
+  <data name="Wurfwinkel" xml:space="preserve">
+    <value>Angle of throw in °</value>
   </data>
 </root>
