@@ -1,5 +1,5 @@
 @page "/login"
-
+@inject NavigationManager Nav
 <PageTitle>Login – Visualise IT!</PageTitle>
 
 <div class="login-container">
@@ -15,8 +15,8 @@
         <div class="field-col">
             <label class="field-label" for="username">Benutzer</label>
             <input id="username" type="text" class="field-input" @bind="Username" placeholder="" />
-            <div class="side-image left-image">
-                <img src="images/patrick-sad.png" alt="Trauriger Patrick" />
+            <div class="side-image left-image" style="visibility: @(ShowLeftImage ? "visible" : "hidden")">
+                <img src="images/angryFisch.jpg" alt="Trauriger Patrick" />
             </div>
         </div>
 
@@ -40,8 +40,8 @@
                 <input type="checkbox" @bind="ShowPassword" />
                 Passwort Anzeigen
             </label>
-            <div class="side-image right-image">
-                <img src="images/sponge-surprised.png" alt="Überraschter SpongeBob" />
+            <div class="side-image right-image" style="visibility: @(ShowPassword ? "visible" : "hidden")">
+                <img src="images/patrick.jpg" alt="Überraschter SpongeBob" />
             </div>
         </div>
 
@@ -58,6 +58,7 @@
     private string Username { get; set; } = string.Empty;
     private string Password { get; set; } = string.Empty;
     private bool ShowPassword { get; set; } = false;
+    private bool ShowLeftImage { get; set; } = false;
     private string ErrorMessage { get; set; } = string.Empty;
 
     private void HandleLogin()
@@ -65,12 +66,13 @@
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
             ErrorMessage = "Bitte Benutzername und Passwort eingeben.";
+            ShowLeftImage = true;
             return;
         }
 
-        // Hier eigene Authentifizierungslogik einbauen
+        ShowLeftImage = false;
         ErrorMessage = string.Empty;
-        // z.B.: NavigationManager.NavigateTo("/dashboard");
+        Nav.NavigateTo("/simulation");
     }
 }
 
