@@ -117,34 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DescriptionText" xml:space="preserve">
-    <value>Diese Seite unterstützt jetzt mehrere Sprachen.</value>
-  </data>
-  <data name="Erde" xml:space="preserve">
-    <value>Erde | 9.81 m/s²</value>
-  </data>
-  <data name="G" xml:space="preserve">
-    <value>Freifallbeschleunigung (g)</value>
-  </data>
-  <data name="Geschwindigkeit" xml:space="preserve">
-    <value>Geschwindigkeit in m/s</value>
-  </data>
   <data name="Gewicht" xml:space="preserve">
-    <value>Gewicht in kg</value>
+    <value>Please enter the weight!</value>
   </data>
-  <data name="Luftwiderstand" xml:space="preserve">
-    <value>Luftwiderstand</value>
-  </data>
-  <data name="Merkur" xml:space="preserve">
-    <value>Merkur | 3.70 m/s²</value>
-  </data>
-  <data name="Mond" xml:space="preserve">
-    <value>Mond | 1.62 m/s²</value>
-  </data>
-  <data name="Reibung" xml:space="preserve">
-    <value>Reibung</value>
-  </data>
-  <data name="Wurfwinkel" xml:space="preserve">
-    <value>Wurfwinkel in °</value>
+  <data name="GewichtRange" xml:space="preserve">
+    <value>Weight may be only given in range from 0.01 to 90kg!</value>
   </data>
 </root>

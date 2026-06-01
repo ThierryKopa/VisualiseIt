@@ -85,6 +85,11 @@
         margin-right: 5px;
     }
 
+    .validation-errors {
+    padding: 1px !important; 
+}
+
+
     
     
 </style>
@@ -113,7 +118,7 @@
                 <DataAnnotationsValidator />
         
 
-            <label class="thin-font">Gewicht in kg</label>
+            <label class="thin-font">@Loc["Gewicht"]</label>
                     @*<input class="input-small" type="number" name="gewicht" placeholder="Gewicht" min="1" max="99">*@
             <InputNumber @bind-Value="myBall.gewicht" class="input-small" type="number" name="gewicht" placeholder="Gewicht"/>
 
@@ -122,20 +127,20 @@
             <InputNumber @bind-Value="myBall.geschwindigkeit" class="input-small" type="number" name="gewicht" placeholder="Geschwindigkeit"/>
 
 
-                <label class="thin-font">Wurfwinkel in °</label>
+                <label class="thin-font">@Loc["Wurfwinkel"]</label>
             <InputNumber @bind-Value="myBall.winkel" class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel" />
                     @*<input class="input-small" type="number" name="gewicht" placeholder="Wurfwinkel">*@
 
-                    <label class="thin-font">Freifall Beschleunigung (g)</label>
+                    <label class="thin-font">@Loc["G"]</label>
                     <select @bind="myBall.g" @bind:after="DefineTheG" class="input-small" name="favorite-cuisine" aria-label="Auwählen..." required>
                         <option selected disabled value="">
-                            Freifall Beschleunigung
+                        @Loc["G"]
                         </option>
 
-                        <option value="merkur">Merkur | 3.70 m/s²</option>
+                        <option value="merkur">@Loc["Merkur"]</option>
                         <option value="venus">Venus | 8.88 m/s²</option>
-                        <option value="erde">Erde | 9.81 m/s²</option>
-                        <option value="mond">Mond | 1.62 m/s²</option>
+                        <option value="erde">@Loc["Erde"]</option>
+                        <option value="mond">@Loc["Mond"]</option>
                         <option value="mars">Mars | 3.86 m/s²</option>
                         <option value="jupiter">Jupiter | 24.79 m/s²</option>
                         <option value="saturn">Saturn | 10.44 m/s²</option>
@@ -155,7 +160,7 @@
                 <br />
                 
            
-            <ValidationSummary />
+            <ValidationSummary class="validation-errors" />
 
             <button type="submit" class="contrast" style="width: 100%">Start</button>
             

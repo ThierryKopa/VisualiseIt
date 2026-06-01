@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+
 namespace HAK_BlazorPicoTemplate.Models
 {
     public class Ball
     {
-        [Required(ErrorMessage = "Bitte geben Sie Gewicht ein!")]
-        [Range(0.01, 90,ErrorMessage ="Gewicht darf zwischen 0.01 und 90kg sein!")]
+        
+        [Required(ErrorMessageResourceType = typeof(HAK_BlazorPicoTemplate.Resources.Models.Ball), ErrorMessageResourceName = "Gewicht")]
+        [Range(0.01, 90, ErrorMessageResourceType = typeof(HAK_BlazorPicoTemplate.Resources.Models.Ball), ErrorMessageResourceName = "GewichtRange")]
         public double gewicht { get; set; }
         [Required(ErrorMessage ="Bitte geben Sie Geschwindigkeit ein!")]
         [Range(1, 50, ErrorMessage = "Geschwindigkeit darf zwischen 1 und 50 m/s sein!")]
