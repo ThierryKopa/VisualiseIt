@@ -61,6 +61,24 @@ namespace HAK_BlazorPicoTemplate.Resources.Models {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bitte geben Sie Geschwindigkeit ein!.
+        /// </summary>
+        public static string Geschwindigkeit {
+            get {
+                return ResourceManager.GetString("Geschwindigkeit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Geschwindigkeit darf zwischen 1 und 80 m/s sein!.
+        /// </summary>
+        public static string GeschwindigkeitRange {
+            get {
+                return ResourceManager.GetString("GeschwindigkeitRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bitte geben Sie Gewicht ein!.
         /// </summary>
         public static string Gewicht {
@@ -70,11 +88,29 @@ namespace HAK_BlazorPicoTemplate.Resources.Models {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Gewicht darf zwischen 0.01 und 90kg sein!&quot;.
+        ///   Looks up a localized string similar to Gewicht darf zwischen 0.01 und 90kg sein!.
         /// </summary>
         public static string GewichtRange {
             get {
                 return ResourceManager.GetString("GewichtRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitte geben Sie Wurfwinkel ein!.
+        /// </summary>
+        public static string Wurfwinkel {
+            get {
+                return ResourceManager.GetString("Wurfwinkel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Winkel darf zwischen -360° und 360° sein!.
+        /// </summary>
+        public static string WurfwinkelRange {
+            get {
+                return ResourceManager.GetString("WurfwinkelRange", resourceCulture);
             }
         }
     }

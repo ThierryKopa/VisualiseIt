@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Geschwindigkeit" xml:space="preserve">
+    <value>Please enter the speed</value>
+  </data>
+  <data name="GeschwindigkeitRange" xml:space="preserve">
+    <value>Speed may be only given in range from 1 to 80 m/s!</value>
+  </data>
   <data name="Gewicht" xml:space="preserve">
     <value>Please enter the weight!</value>
   </data>
   <data name="GewichtRange" xml:space="preserve">
     <value>Weight may be only given in range from 0.01 to 90kg!</value>
+  </data>
+  <data name="Wurfwinkel" xml:space="preserve">
+    <value>Please enter the angle of throw!</value>
+  </data>
+  <data name="WurfwinkelRange" xml:space="preserve">
+    <value>The angle of throw may be only given in range from -360 to 360 degrees!</value>
   </data>
 </root>
