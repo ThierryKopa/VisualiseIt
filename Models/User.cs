@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HAK_BlazorPicoTemplate.Models;
 using Microsoft.EntityFrameworkCore;
+using HAK_BlazorPicoTemplate.Models;
 
 namespace HAK_BlazorPicoTemplate.Models
 {
@@ -8,9 +9,9 @@ namespace HAK_BlazorPicoTemplate.Models
     {
         
         public int Id { get; set; }
-        [Required(ErrorMessage = "Bitte gegen Sie den Benutzername ein!")]
+        [Required(ErrorMessageResourceType = typeof(HAK_BlazorPicoTemplate.Resources.Models.User), ErrorMessageResourceName = "BN")]
         public string Username { get; set; }
-        [Required(ErrorMessage = "Bitte gegen Sie das Passwort ein!")]
+        [Required(ErrorMessageResourceType = typeof(HAK_BlazorPicoTemplate.Resources.Models.User), ErrorMessageResourceName = "PS")]
         public string Password { get; set; }
         
 

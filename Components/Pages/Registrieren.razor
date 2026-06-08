@@ -14,7 +14,7 @@
         <DataAnnotationsValidator/>
         <!-- Benutzer -->
         <div class="field-col">
-            <label class="field-label" for="username">Benutzername</label>
+            <label class="field-label" for="username">@Loc["Benutzername"]</label>
             <input id="username" type="text" class="field-input" @bind="myUser.Username" placeholder="" />
             <div class="side-image left-image" style="visibility: @(ShowLeftImage ? "visible" : "hidden")">
                 <img src="images/angryFisch.jpg" alt="Trauriger Patrick" />
@@ -24,11 +24,11 @@
         <!-- Mitte -->
             <div class="center-col">
                 <div class="logo-circle">
-                    <img src="images/logo.png" alt="Logo" />
+                    <img src="images/Logo.png" alt="Logo" />
                 </div>
 
                 <button class="btn-login" @onclick="Register">
-                    Konto Anlegen →
+                    @Loc["Erstellen"] →
                 </button>
 
                 <div class="alerts-container">
@@ -51,12 +51,12 @@
 
         <!-- Passwort -->
         <div class="field-col">
-            <label class="field-label" for="password">Passwort</label>
+            <label class="field-label" for="password">@Loc["Passwort"]</label>
             <input id="password" type="@(ShowPassword ? "text" : "password")"
                    class="field-input" @bind="myUser.Password" placeholder="" />
             <label class="show-password-label">
                 <input type="checkbox" @bind="ShowPassword" />
-                Passwort Anzeigen
+                @Loc["ShowPs"]
             </label>
             <div class="side-image right-image" style="visibility: @(ShowPassword ? "visible" : "hidden")">
                 <img src="images/patrick.jpg" alt="Überraschter SpongeBob" />
@@ -72,6 +72,7 @@
 </div>
 
 @inject UserService myUserService
+@inject IStringLocalizer<Registrieren> Loc
 
 @code {
 
