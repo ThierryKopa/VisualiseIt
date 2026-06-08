@@ -7,6 +7,7 @@ namespace HAK_BlazorPicoTemplate.Services
     public class UserService
     {
         private readonly IDbContextFactory<UserDbContext> _dbContextFactory;
+        public User loggedInUser { get; private set; }
 
         public UserService(IDbContextFactory<UserDbContext> dbContextFactory)
         {
