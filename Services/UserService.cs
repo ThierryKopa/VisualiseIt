@@ -13,7 +13,7 @@ namespace HAK_BlazorPicoTemplate.Services
             _dbContextFactory = dbContextFactory;
         }
 
-        public bool CreateUser(User newUser)
+        public (bool, string) AddUser(User newUser)
         {
             try
             {
@@ -21,16 +21,16 @@ namespace HAK_BlazorPicoTemplate.Services
                 {
                     context.Users.Add(newUser);
                     context.SaveChanges();
-                    return true;
+                    return (true, string.Empty);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return (false, ex.Message);
             }
         }
 
-        public bool DeleteUser(User newUser)
+        public (bool, string) DeleteUser(User newUser)
         {
             try
             {
@@ -38,12 +38,12 @@ namespace HAK_BlazorPicoTemplate.Services
                 {
                     context.Users.Remove(newUser);
                     context.SaveChanges();
-                    return true;
+                    return (true, string.Empty);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return (false, ex.Message);
             }
         }
 

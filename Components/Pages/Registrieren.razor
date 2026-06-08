@@ -1,0 +1,329 @@
+﻿@page "/register"
+@inject NavigationManager NavManager
+<PageTitle>Login – Visualise IT!</PageTitle>
+
+
+<div class="login-container">
+    <nav class="lang-switcher">
+        <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a> |
+        <a href="/Culture/Set?culture=en&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">EN</a>
+    </nav>
+
+    <EditForm Model="@myUser">
+    <div class="login-grid">
+        <DataAnnotationsValidator/>
+        <!-- Benutzer -->
+        <div class="field-col">
+            <label class="field-label" for="username">Benutzername</label>
+            <input id="username" type="text" class="field-input" @bind="myUser.Username" placeholder="" />
+            <div class="side-image left-image" style="visibility: @(ShowLeftImage ? "visible" : "hidden")">
+                <img src="images/angryFisch.jpg" alt="Trauriger Patrick" />
+            </div>
+        </div>
+
+        <!-- Mitte -->
+            <div class="center-col">
+                <div class="logo-circle">
+                    <img src="images/logo.png" alt="Logo" />
+                </div>
+
+                <button class="btn-login" @onclick="Register">
+                    Konto Anlegen →
+                </button>
+
+                <div class="alerts-container">
+                    @if (zeigeFehler)
+                    {
+                        <article class="pico-background-red-500 message" @onclick="CloseMessages">
+                            <p>@ErrorMessage</p>
+                        </article>
+                    }
+                    @if (zeigeOk)
+                    {
+                        <article class="pico-background-jade-500 message" @onclick="CloseMessages">
+                            <p>Konto erfolgreich angelegt!</p>
+                        </article>
+                    }
+
+                    <ValidationSummary />
+                </div>
+            </div>
+
+        <!-- Passwort -->
+        <div class="field-col">
+            <label class="field-label" for="password">Passwort</label>
+            <input id="password" type="@(ShowPassword ? "text" : "password")"
+                   class="field-input" @bind="myUser.Password" placeholder="" />
+            <label class="show-password-label">
+                <input type="checkbox" @bind="ShowPassword" />
+                Passwort Anzeigen
+            </label>
+            <div class="side-image right-image" style="visibility: @(ShowPassword ? "visible" : "hidden")">
+                <img src="images/patrick.jpg" alt="Überraschter SpongeBob" />
+            </div>
+        </div>
+
+        
+    </div>
+
+    </EditForm>
+
+    
+</div>
+
+@inject UserService myUserService
+
+@code {
+
+    private User myUser = new User();
+    private bool ShowLeftImage = false;
+    private bool ShowPassword = false;
+    string ErrorMessage = string.Empty;
+    bool isLoading = false;
+    bool zeigeOk = false;
+    bool zeigeFehler = false;
+
+    private async Task CloseMessages()
+    {
+        zeigeFehler = false;
+        zeigeOk = false;
+    }
+
+    private async Task Register()
+    {
+        isLoading = true;
+
+        //Zeichne Seite neu
+        await Task.Yield(); // Suche den render Task
+        await InvokeAsync(StateHasChanged); // Neu rendern
+
+        // Den eingegebenen User in der Datenbank speichern
+        (bool result, string message) = myUserService.AddUser(myUser);
+
+        if (!result)
+        {
+            zeigeFehler = true;
+            ErrorMessage = message;
+
+        }
+        else
+        {
+            zeigeOk = true;
+        }
+        isLoading = false;
+    }
+
+}
+
+<style>
+    .login-container {
+        min-height: 100vh;
+        background-color: #e0e0e0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: safe center;
+    }
+
+    .lang-switcher {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+        .lang-switcher a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 400;
+        }
+
+            .lang-switcher a.active {
+                text-decoration: underline;
+                font-weight: 700;
+            }
+
+        .lang-switcher span {
+            color: #555;
+        }
+
+    /* --- Сетка: теперь ровно 3 равные колонки --- */
+    .login-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Сделано: 3 равные колонки */
+        align-items: start;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1200px;
+        padding: 2rem;
+        box-sizing: border-box;
+    }
+
+    /* --- Колонки полей --- */
+    .field-col {
+        display: flex;
+        width: 100%; /* Изменено с 400px на 100%, чтобы колонка подстраивалась под сетку */
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .field-label {
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111;
+    }
+
+    .field-input {
+        width: 300px;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        border: 1.5px solid #bbb;
+        background: #f5f5f0;
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #555;
+        }
+
+    .show-password-label {
+        font-size: 0.85rem;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+    }
+
+    .side-image img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: block;
+    }
+
+    /* --- Центральная колонка --- */
+    .center-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    padding-top: 0.5rem;
+    width: 100%;
+    position: relative; /* ОЧЕНЬ ВАЖНО */
+}
+
+/* Контейнер для всех сообщений Blazor */
+.alerts-container {
+    position: absolute;
+    top: 100%; /* Привязываем к самому низу центральной колонки */
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 2rem; /* Отступ вниз от кнопки "Konto Anlegen" */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    
+    width: max-content; /* Не дает сообщениям слишком узко сжиматься */
+    max-width: 90vw; /* Защита, чтобы на мобилках не вылезло за экран */
+    z-index: 10;
+}
+
+
+.alerts-container article.message {
+    margin: 0;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 8px; /* Немного сгладим углы для красоты */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Добавим тень, раз они висят поверх фона */
+}
+
+.alerts-container article.message p {
+    margin: 0; /* Убираем отступ у параграфа внутри Pico */
+    color: white; /* Делаем текст белым на фоне цветных плашек */
+}
+
+/* Центрируем список ошибок ValidationSummary */
+.alerts-container ul {
+    list-style-position: inside;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    color: #c0392b; /* Красный цвет для списка валидации */
+    font-weight: 600;
+}
+
+    .logo-circle {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #111;
+        background: #fff;
+    }
+
+        .logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .btn-login {
+        padding: 0.75rem 2rem;
+        border-radius: 999px;
+        border: 1.5px solid #333;
+        background-color: #333;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        white-space: nowrap;
+    }
+
+    .register-link {
+        font-size: 0.95rem;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+    /* --- Ошибка: добавлено ограничение по ширине инпута --- */
+    .error-msg {
+        color: #c0392b;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        text-align: center;
+        max-width: 300px; /* Чтобы длинный текст ошибки не растягивал колонку шире инпута */
+        word-break: break-word;
+    }
+
+    /* --- Адаптивность --- */
+    @@media (max-width: 768px) {
+        .login-grid {
+            grid-template-columns: 1fr; /* На мобилках выстраиваем в один столбец */
+            justify-items: center;
+            gap: 3rem;
+        }
+
+        .center-col {
+            order: -1; /* Логотип и кнопка будут сверху на экранах поменьше */
+        }
+    }
+</style>

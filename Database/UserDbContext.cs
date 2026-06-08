@@ -11,6 +11,8 @@ namespace HAK_BlazorPicoTemplate.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("BieliaievMatvii_3CK");
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("users");

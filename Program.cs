@@ -3,6 +3,7 @@ using HAK_BlazorPicoTemplate.Database;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using HAK_BlazorPicoTemplate.Services;
 
 namespace HAK_BlazorPicoTemplate
 {
@@ -20,6 +21,7 @@ namespace HAK_BlazorPicoTemplate
 
             // 1. Lokalisierungs-Dienst hinzufügen und Ordnername definieren
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+            builder.Services.AddScoped<UserService>();
 
             var app = builder.Build();
 
