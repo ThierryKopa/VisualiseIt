@@ -94,7 +94,8 @@
 <header>
     <nav class="container">
         <ul>
-            <strong>Visualise IT!</strong>
+            <a href="/"><strong>Visualise IT!</strong></a>
+            
         </ul>
         <ul>
             <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a> | 
@@ -295,7 +296,7 @@
             myBall.tempoY = Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость положительной (летит вверх)
 
             if(reibung)
-            myBall.tempoX *= 0.40;
+            myBall.tempoX *= 0.25;
 
             
             if (Math.Abs(myBall.tempoY) < 0.5)

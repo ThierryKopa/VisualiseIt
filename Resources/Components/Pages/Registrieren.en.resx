@@ -129,4 +129,25 @@
   <data name="ShowPs" xml:space="preserve">
     <value>Show password</value>
   </data>
+  <data name="Angelegt" xml:space="preserve">
+    <value>The account has been successfully created!</value>
+  </data>
+  <data name="Registrieren" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back to login page</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="GetS" xml:space="preserve">
+    <value>Get started</value>
+  </data>
+  <data name="FillerText" xml:space="preserve">
+    <value>Begin your journey to understanding the physical interaction of external factors on objects through visual simulation.</value>
+  </data>
+  <data name="KK" xml:space="preserve">
+    <value>No account yet?</value>
+  </data>
 </root>

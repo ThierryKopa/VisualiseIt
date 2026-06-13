@@ -4,16 +4,20 @@
 <PageTitle>Visualise IT!</PageTitle>
 
 <div class="hero-container">
-    <nav class="lang-switcher">
-        <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a>  |
-        <a href="/Culture/Set?culture=en&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">EN</a>
-    </nav>
-
     <div class="hero-grid">
         <div class="hero-left">
-            <h1 class="hero-title">Visualise IT!</h1>
-            <p class="hero-subtitle">Filler Text</p>
-            <a href="/login" class="btn-start">Get started</a>
+            <div class="hero-left-top">
+                <nav class="lang-switcher">
+                    <a href="/Culture/Set?culture=de&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">DE</a>
+                    <span aria-hidden="true">|</span>
+                    <a href="/Culture/Set?culture=en&redirectUri=@Uri.EscapeDataString(NavManager.Uri)">EN</a>
+                </nav>
+            </div>
+            <div class="hero-left-content">
+                <h1 class="hero-title">Visualise IT!</h1>
+                <p class="hero-subtitle">@Loc["FillerText"]</p>
+                <a href="/login" class="btn-start">@Loc["GetS"] →</a>
+            </div>
         </div>
 
         <div class="hero-right">
@@ -22,44 +26,55 @@
     </div>
 </div>
 
+@inject IStringLocalizer<Registrieren> Loc
+
 @code {
-    private string CurrentLang { get; set; } = "EN";
+    
+
+
 }
 
 <style>
     .hero-container {
         min-height: 100vh;
         background-color: #e0e0e0;
-        position: relative;
         display: flex;
         flex-direction: column;
     }
 
     .lang-switcher {
-        position: absolute;
-        top: 1rem;
-        right: 1.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
         font-size: 0.95rem;
-        z-index: 10;
+        margin-bottom: 2rem;
     }
 
-    .lang-switcher a {
-        text-decoration: none;
-        color: #222;
-        font-weight: 400;
+    .lang-switcher {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+        width: fit-content;
+        align-self: flex-end; /* прижимает к правому краю hero-left */
+        margin-left: auto; /* дублируем на случай если align-self не сработает */
     }
 
-    .lang-switcher a.active {
-        text-decoration: underline;
-        font-weight: 600;
-    }
+        .lang-switcher a {
+            text-decoration: none !important; /* !important перебивает глобальные стили */
+            color: #222 !important;
+            font-weight: 400 !important;
+        }
 
-    .lang-switcher span {
-        color: #555;
-    }
+        .lang-switcher span {
+            color: #555;
+        }
+
+        .lang-switcher a.active {
+            text-decoration: underline !important;
+            font-weight: 600 !important;
+        }
 
     .hero-grid {
         display: grid;
@@ -70,15 +85,27 @@
     .hero-left {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 4rem 3rem 4rem 3rem;
+        padding: 1.5rem 3rem 4rem 3rem;
         background-color: #e0e0e0;
+    }
+
+    .hero-left-top {
+        display: flex;
+        justify-content: flex-end; /* прижимает nav вправо */
+        margin-bottom: auto;
+    }
+
+    .hero-left-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
     }
 
     .hero-title {
         font-family: Georgia, 'Times New Roman', serif;
         font-size: clamp(3.5rem, 8vw, 6rem);
-        font-weight: 400;
+        font-weight: 350;
         line-height: 1.1;
         color: #111;
         margin: 0 0 2rem 0;
@@ -103,10 +130,10 @@
         align-self: flex-start;
     }
 
-    .btn-start:hover {
-        background-color: #333;
-        color: #fff;
-    }
+        .btn-start:hover {
+            background-color: #333;
+            color: #fff;
+        }
 
     .hero-right {
         overflow: hidden;

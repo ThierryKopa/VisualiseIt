@@ -18,11 +18,21 @@ namespace HAK_BlazorPicoTemplate.Services
         {
             try
             {
+                bool seek;
+
                 using(var context = _dbContextFactory.CreateDbContext())
                 {
-                    context.Users.Add(newUser);
-                    context.SaveChanges();
-                    return (true, string.Empty);
+                    if(context.Users.Where(e => e.Username == newUser.Username).Any())
+                    {
+                        return (false, "Der Benutzername ist schon besetzt!");
+                    }
+                    else
+                    {
+                        context.Users.Add(newUser);
+                        context.SaveChanges();
+                        return (true, string.Empty);
+                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -53,6 +63,45 @@ namespace HAK_BlazorPicoTemplate.Services
             using (var context = _dbContextFactory.CreateDbContext())
             {
                 return context.Users.ToList();
+            }
+        }
+
+        public (bool, string) LoginUser(User loginUser)
+        {
+            try
+            {
+                UserDbContext datenbankVerbindung = _dbContextFactory.CreateDbContext();
+
+                
+
+                bool userVorhanden = datenbankVerbindung.Users
+                    .Where(u => u.Username == loginUser.Username)
+                    .Where(u => u.Password == loginUser.Password)
+                    .Any();
+
+                if (userVorhanden)
+                {
+                    this.loggedInUser = loginUser;
+
+                    User myUser = datenbankVerbindung.Users
+                    .Where(u => u.Username == loginUser.Username)
+                    .Where(u => u.Password == loginUser.Password)
+                    .Single();
+
+                    this.loggedInUser.Id = myUser.Id;
+
+                    return (true, string.Empty);
+                }
+                else
+                {
+                    return (false, "Benutzername oder Passwort falsch.");
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                return (false, e.Message);
             }
         }
     }

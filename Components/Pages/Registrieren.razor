@@ -23,6 +23,7 @@
 
         <!-- Mitte -->
             <div class="center-col">
+                <strong>@Loc["Registrieren"]</strong>
                 <div class="logo-circle">
                     <img src="images/Logo.png" alt="Logo" />
                 </div>
@@ -31,6 +32,7 @@
                     @Loc["Erstellen"] →
                 </button>
 
+                <a class="register-link" href="/login">@Loc["Back"]</a>
                 <div class="alerts-container">
                     @if (zeigeFehler)
                     {
@@ -41,7 +43,7 @@
                     @if (zeigeOk)
                     {
                         <article class="pico-background-jade-500 message" @onclick="CloseMessages">
-                            <p>Konto erfolgreich angelegt!</p>
+                            <p>@Loc["Angelegt"]</p>
                         </article>
                     }
 
@@ -117,6 +119,13 @@
 }
 
 <style>
+
+    
+
+    strong {
+        font-size: 40px;
+    }
+
     .login-container {
         min-height: 100vh;
         background-color: #e0e0e0;
@@ -219,7 +228,8 @@
     flex-direction: column;
     align-items: center;
     gap: 1.25rem;
-    padding-top: 0.5rem;
+        margin-top: -3rem;
+    /* padding-top: 0.5rem;*/
     width: 100%;
     position: relative; /* ОЧЕНЬ ВАЖНО */
 }
