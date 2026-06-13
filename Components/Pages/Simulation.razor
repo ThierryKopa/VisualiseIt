@@ -146,7 +146,7 @@
 
                 <br />
                 <div style="display:flex; align-items:center; gap:1rem;">
-                    <label class="thin-font">@Loc["Luftwideerstand"] </label>
+                    <label class="thin-font">@Loc["Luftwiderstand"] </label>
                             <input type="checkbox" @bind-value="luftwiderstand" checked />
                 </div>
                 
@@ -227,6 +227,7 @@
 
     private async Task StartSimulation()
     {
+        elapsedTime = 0;
         double winkelInRadians = myBall.winkel * Math.PI / 180.0;
 
         myBall.tempoX = myBall.geschwindigkeit * Math.Cos(winkelInRadians);
@@ -236,6 +237,8 @@
         _cts = new CancellationTokenSource();
 
         using var periodicTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(1000 / 60));
+
+        using var ctc = new CancellationTokenSource();
         //var timer = new Timer(DoSomethingFancy, null, TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(1000/60));
         try
         {
@@ -243,9 +246,17 @@
             // Никаких наложений потоков физически быть не может!
             while (await periodicTimer.WaitForNextTickAsync(_cts.Token))
             {
-                UpdatePhysics(); 
+                if (myBall.tempoY == 0)
+                {
+                    ctc.Cancel();
+                }
+                else
+                {
+                    UpdatePhysics();
 
-                await InvokeAsync(StateHasChanged);
+                    await InvokeAsync(StateHasChanged);
+                }
+
             }
         }
         catch (OperationCanceledException)
@@ -275,7 +286,7 @@
         // Kräfte
         fx = -k * myBall.tempoX;
         fy = -myBall.gewicht * freiFallG - (k * myBall.tempoY);
-        
+
 
         // Beschleunigung
         ax = fx / myBall.gewicht;
@@ -296,9 +307,9 @@
             myBall.tempoY = Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость положительной (летит вверх)
 
             if(reibung)
-            myBall.tempoX *= 0.25;
+                myBall.tempoX *= 0.25;
 
-            
+
             if (Math.Abs(myBall.tempoY) < 0.5)
             {
                 myBall.tempoY = 0;
@@ -326,6 +337,8 @@
             x = 1150 - radius;
             myBall.tempoX = -Math.Abs(myBall.tempoX) * elasticity; // Делаем скорость отрицательной (летит влево)
         }
+
+        
     }
 
     public void Dispose()

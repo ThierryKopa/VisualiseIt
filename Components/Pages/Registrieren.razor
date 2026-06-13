@@ -94,11 +94,6 @@
 
     private async Task Register()
     {
-        isLoading = true;
-
-        //Zeichne Seite neu
-        await Task.Yield(); // Suche den render Task
-        await InvokeAsync(StateHasChanged); // Neu rendern
 
         // Den eingegebenen User in der Datenbank speichern
         (bool result, string message) = myUserService.AddUser(myUser);

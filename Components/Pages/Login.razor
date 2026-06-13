@@ -94,9 +94,7 @@
 
     private async Task LoginUser()
     {
-        isLoading = true;
-        await Task.Yield(); // Suche den render Task
-        await InvokeAsync(StateHasChanged); // Neu rendern
+        
         (bool result, string message) = myUserService.LoginUser(myUser);
 
 
