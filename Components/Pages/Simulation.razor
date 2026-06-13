@@ -306,8 +306,11 @@
             y = 650 - radius; // Возвращаем мяч на границу поля
             myBall.tempoY = Math.Abs(myBall.tempoY) * elasticity; // Делаем скорость положительной (летит вверх)
 
-            if(reibung)
-                myBall.tempoX *= 0.25;
+            if (reibung)
+            {
+                myBall.tempoX *= 0.15;
+            }
+            
 
 
             if (Math.Abs(myBall.tempoY) < 0.5)
